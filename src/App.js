@@ -5,9 +5,9 @@ import Homepage from "./Pages/Homepage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        <Route path="/portfolio" element={<Homepage />} />
       </Routes>
     </BrowserRouter>
   );
