@@ -5,8 +5,8 @@ function SingleWorkComponent( props) {
    
   return (
     <div  className=" flex flex-row  my-2    border-black border-[0px]  rounded-[10px] rounded-l-[0px]">
-     <div data-aos="fade-down" className='w-[5px] rounded-[0px] bg-black'></div>      
-           <div data-aos="fade-up" className=" flex flex-col p-3 md:p-4  w-full">
+     <div data-aos="fade-down" data-aos-once={true} data-aos-anchor-placement="bottom" className='w-[5px] rounded-[0px] bg-black'></div>      
+           <div data-aos="fade-up" data-aos-once={true}  data-aos-anchor-placement="bottom" className=" flex flex-col p-3 md:p-4  w-full">
             <div className=' flex flex-row items-center justify-between '>
                 <div className=' flex-col flex flex-1'>
                     <div className=' text-[10px] md:text-[12px] px-2 font-semibold rounded-[0px] w-fit bg-[#000000] text-white'> {data?.duration}</div>

@@ -21,7 +21,7 @@ function IntrestsBlock() {
 
   return (
     <div className=" flex flex-col my-10 ">
-    <div className="font-bold text-[#00000086] text-[14px] md:text-[18px] text-center md:text-left" data-aos="fade-in">
+    <div className="font-bold text-[#00000086] text-[14px] md:text-[18px] text-center md:text-left" data-aos="fade-in" data-aos-anchor-placement="bottom" data-aos-once={true}>
       Skills
     </div>
     <div className="md:flex-row grid-cols-5 grid md:flex my-3 ">
