@@ -71,7 +71,7 @@ function ProjectsBlock() {
  const [activeTabId,setActiveTabId] = useState("none");  
   return (
     <div className=" flex flex-col my-10 ">
-    <div className="font-bold text-[#00000086] text-[14px] md:text-[18px]  " data-aos="fade-in">
+    <div className="font-bold text-[#00000086] text-[14px] md:text-[18px]  " data-aos="fade-in" data-aos-once={true} data-aos-anchor-placement="bottom">
       Projects
     </div>
     <div className="flex-col flex  ">
