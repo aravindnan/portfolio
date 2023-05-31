@@ -13,9 +13,11 @@ function IntrestsBlock() {
         {name:"Figma",logo:"figma"},
         {name:"C++",logo:"c++"},
         {name:"DBMS",logo:"dbms"},
+        {name:"Git",logo:"git"},
         {name:"Illustrator",logo:"illustrator"},
         {name:"XD",logo:"xd"},
         {name:"UI/UX", logo:"uiux"}
+
 
     ]
 

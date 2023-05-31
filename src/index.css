@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 ::-webkit-scrollbar{
   display: none;
 }
@@ -16,6 +17,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent; /* for removing the highlight */
 }
 
 code {

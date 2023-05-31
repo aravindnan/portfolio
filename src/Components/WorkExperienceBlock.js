@@ -24,7 +24,7 @@ function WorkExperienceBlock() {
        },
        {
         workId:"we2",
-        jobTitle:"UI/UX Designer( INTERNSHIP )",
+        jobTitle:"UI/UX Designer (INTERNSHIP)",
         duration:"May 2021 - June 2021",
         companyName:"Youth Empowerment Foundation",
         workLink:"https://drive.google.com/drive/folders/1qMhCAWZmnCeiYf4WyjSM9YheERCS4ODK?usp=share_link",
