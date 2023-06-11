@@ -1,5 +1,6 @@
 import React from 'react'
 import SingleIntrestComponent from './SingleIntrestComponent'
+import { Intrests } from '../DATA/data'
 
 function IntrestsBlock() {
 
@@ -28,7 +29,7 @@ function IntrestsBlock() {
     </div>
     <div className="md:flex-row grid-cols-5 grid md:flex my-3 ">
         {
-            IntrestsData.map((node)=>(
+            Intrests.map((node)=>(
                 <SingleIntrestComponent data={node}/>
             ))
         }

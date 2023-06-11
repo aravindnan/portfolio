@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { PersonalInformation } from '../DATA/data';
 
 function Footer() {
 
@@ -17,7 +18,7 @@ function Footer() {
 
   return (
     <div className='bg-[#f1f1f1] p-3 flex flex-col md:flex-row justify-between '>
-      <div className='font-semibold text-[14px] md:mx-0 hidden md:flex '>• Kochi • India</div> 
+      <div className='font-semibold text-[14px] md:mx-0 hidden md:flex '>• {PersonalInformation.city} • {PersonalInformation.country}</div> 
         {
         copied?
         <div className=' absolute bg-[#f1f1f1] text-[14px]  font-semibold items-center flex flex-row mx-auto md:mx-0  md:text-[16px]'>
@@ -27,9 +28,9 @@ function Footer() {
 
         }
         <div className='flex justify-between'>
-        <div className='font-semibold text-[14px] md:mx-0 flex md:hidden'>• Kochi • India</div>
+        <div className='font-semibold text-[14px] md:mx-0 flex md:hidden'>• {PersonalInformation.city} • {PersonalInformation.country}</div>
         <div className='flex flex-row items-center justify-between md:justify-around w-[90px]'>
-          <a href='https://www.linkedin.com/in/aravind-nandakumar-995a1b244' className='cursor-pointer' target='_blank' >
+          <a href={PersonalInformation.linkedinURL} className='cursor-pointer' target='_blank' >
           <div>
           <svg height='25' width='25' className='scale-75 md:scale-100' viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
           </div>
@@ -37,7 +38,7 @@ function Footer() {
 
           <CopyToClipboard
           className="cursor-pointer"
-          text='aravindnandakumar16@gmail.com'
+          text={PersonalInformation.emailID}
           onCopy={()=>setCopied(true)}
           >
           <div title="Copy Email">
