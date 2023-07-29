@@ -25,6 +25,7 @@ export const WorkExperience=[
             "Proficient in developing applications utilizing technologies such as messaging communication, video conferencing through websockets, and building landing pages using React and the headless content management system, Strapi",
             "Successfully contributed to the development of a travel booking software, enabling users to conveniently plan and book their holiday trips.",
             "Skilled in creating visually appealing and user-friendly interfaces using React, Tailwind, and CSS.",
+            "Having a working knowledge of global state management in react using Redux",
             "Demonstrated ability to work on multiple projects simultaneously, showcasing adaptability and efficiency in a fast-paced environment.",
             " Problem-solving skills and a passion for creating seamless user experiences through innovative technology solutions."
             ]
@@ -131,13 +132,13 @@ export const Projects=[
 
 
  export const Education=[
-    //   {
-    //       eduId:"ed1",
-    //       courseName:"Masters In Computer Application",
-    //       duration:"Currently Persuing",
-    //       institutionName:"Christ University,Bangalore",
+      {
+          eduId:"ed1",
+          courseName:"Masters In Computer Application",
+          duration:"Currently Persuing",
+          institutionName:"Christ University,Bangalore",
          
-    //  },
+     },
      {
         eduId:"ed2",
         courseName:"Bachelors of Science in Computer Application",
@@ -165,7 +166,7 @@ export  const Intrests=[
         {name:"C++",logo:"c++"},
         {name:"DBMS",logo:"dbms"},
         {name:"Git",logo:"git"},
-        {name:"Illustrator",logo:"illustrator"},
+        {name:"Adobe",logo:"illustrator"},
         {name:"XD",logo:"xd"},
         {name:"UI/UX", logo:"uiux"}
 
