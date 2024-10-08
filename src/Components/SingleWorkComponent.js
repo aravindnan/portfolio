@@ -5,10 +5,10 @@ function SingleWorkComponent( props) {
    
   return (
     <div  className=" flex flex-row  my-2    border-black border-[0px]  rounded-[10px] rounded-l-[0px]">
-     <div data-aos="fade-down" data-aos-once={true} data-aos-anchor-placement="bottom" className='w-[5px] rounded-[0px] bg-black'></div>      
-           <div data-aos="fade-up" data-aos-once={true}  data-aos-anchor-placement="bottom" className=" flex flex-col p-3 md:p-4  w-full">
-            <div className=' flex flex-row items-center justify-between '>
-                <div className=' flex-col flex flex-1'>
+     <div data-aos-duration="2000" data-aos="fade-up" data-aos-once={true} data-aos-anchor-placement="bottom" className='w-[5px] rounded-[0px] bg-black'></div>      
+           <div data-aos="fade-up" data-aos-duration="1000" data-aos-once={true}  data-aos-anchor-placement="bottom" className="flex flex-col w-full p-3 md:p-4">
+            <div className='flex flex-row items-center justify-between '>
+                <div className='flex flex-col flex-1 '>
                     <div className=' text-[10px] md:text-[12px] px-2 font-semibold rounded-[0px] w-fit bg-[#000000] text-white'> {data?.duration}</div>
                     <div className=' text-[16px] md:text-[20px] font-bold '>{data?.jobTitle}</div>
                     <div className=' text-[12px] md:text-[15px] font-semibold'>{data?.companyName}</div>
@@ -24,10 +24,10 @@ function SingleWorkComponent( props) {
                 activeTabId===data?.workId?
                 <div>
 
-                <div className='flex flex-col mt-5 bg-[#f1f1f1] p-2 rounded-[0px]'>
+                <div className='flex flex-col mt-5 bg-[#f1f1f1] p-2 rounded-[0.15rem]'>
                     {
                         data?.RRs.map((node)=>(
-                           <div className='flex flex-row items-start  my-1'>
+                           <div className='flex flex-row items-start my-1'>
                             <svg xmlns="http://www.w3.org/2000/svg" className='scale-75 md:scale-100 mt-[-1px] md:mt-[3px] min-w-[20px] min-h-[20px] star' height="20" viewBox="0 -960 960 960" width="20"><path d="M480-252.463 309.77-149.695q-6.461 3.462-13.153 3.154-6.692-.308-12.154-4.154-5.461-3.846-8.192-10.115t-.731-13.961l44.769-193.537L170.541-499q-6.077-5.076-7.577-11.653-1.5-6.577.5-13.038 1.616-6.077 6.885-10.231t12.961-4.769l198.153-17.461 77.076-183.076q3.231-6.692 9.115-10.231 5.885-3.538 12.346-3.538t12.346 3.538q5.884 3.539 9.115 10.231l77.076 183.076 198.153 17.461q7.692.615 12.961 4.769t7.269 10.231q1.616 6.461.116 13.038T789.459-499L639.691-368.308l45.153 193.537q1.616 7.692-1.115 13.961t-8.192 10.115q-5.462 3.846-12.154 4.154-6.692.308-13.153-3.154L480-252.463Z"/></svg>
                             <div className='text-[12px] md:text-[18px] ml-1'>{node}</div>
                             </div>

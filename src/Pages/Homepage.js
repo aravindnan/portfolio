@@ -10,7 +10,7 @@ import IntrestsBlock from "../Components/IntrestsBlock";
 function Homepage() {
   return (
     <>
-    <div className="mx-auto w-[95%] lg:w-[90%] xl:w-[90%] 2xl:w-[75%]">
+    <div className="mx-auto w-[95%] lg:w-[90%] xl:w-[90%] 2xl:w-[75%] ">
       <PersonalInfoBlock/>
       <WorkExperienceBlock/>
       <ProjectsBlock/>

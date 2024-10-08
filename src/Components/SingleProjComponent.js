@@ -4,14 +4,14 @@ function SingleProjComponent(props) {
     const{activeTabId,setActiveTabId,data}=props;
   return (
     <div  className="  flex flex-row  my-2     border-black border-[0px]  rounded-[10px] rounded-l-[0px]">
-    <div data-aos="fade-down" data-aos-once={true} data-aos-anchor-placement="bottom" className='w-[5px] rounded-[0px] bg-black'></div>      
-          <div data-aos="fade-up" data-aos-once={true} data-aos-anchor-placement="bottom" className=" flex flex-col p-3 md:p-4  w-full ">
-           <div className=' flex flex-row items-center justify-between '>
-               <div className=' flex-col flex flex-1'>
+    <div data-aos="fade-up" data-aos-duration="2000" data-aos-once={true} data-aos-anchor-placement="bottom" className='w-[5px] rounded-[0px] bg-black'></div>      
+          <div data-aos="fade-up" data-aos-duration="1000" data-aos-once={true} data-aos-anchor-placement="bottom" className="flex flex-col w-full p-3 md:p-4">
+           <div className='flex flex-row items-center justify-between '>
+               <div className='flex flex-col flex-1 '>
                    <div className=' text-[16px] md:text-[20px] font-bold'>{data?.projectName}</div>
-                   <div className='flex flex-row items-center'>
+                   <div className='flex flex-row flex-wrap items-center'>
                     { data?.projectMedium?.map((node)=>(                       
-                         <div key={node} className='mr-2 text-[11px] flex items-center md:text-[12px] px-1 md:px-2 font-semibold rounded-[0px] w-fit bg-[#000000] text-white'>{node}</div>
+                         <div key={node} className='mr-2 mt-2 rounded-[1px] text-[11px] flex items-center py-[1px] md:text-[12px] px-2 md:px-2 font-semibold  w-fit bg-[#000000] text-white'>{node}</div>
                     ))
                     }
 
@@ -27,7 +27,7 @@ function SingleProjComponent(props) {
            {
                activeTabId===data?.projID?
                <div className='flex flex-col'>
-               <div className='flex flex-col mt-5 bg-[#f1f1f1] p-2 rounded-[0px]'>
+               <div className='flex flex-col mt-5 bg-[#f1f1f1] p-2 rounded-[0.15rem]'>
                    {
                        data?.projectFeatures.map((node)=>(
                           <div className='flex flex-row items-start my-1'>

@@ -6,11 +6,11 @@ function EducationBlock() {
  
   return (
     
-        <div className=" flex flex-col my-10">
-            <div className="font-bold text-[#00000086] text-[14px] md:text-[18px]  " data-aos-anchor-placement="bottom" data-aos="fade-in">
+        <div className="flex flex-col my-10 ">
+            <div data-aos-duration="1000"  data-aos-once={true} data-aos="fade-up" className="font-bold text-[#00000086] text-[14px] md:text-[18px]  " data-aos-anchor-placement="bottom" >
             Education
             </div>
-            <div className="flex-col flex  ">
+            <div className="flex flex-col ">
                 {
                     Education.map((node)=>(
                         <SingleEducationComponent data={node}/>
