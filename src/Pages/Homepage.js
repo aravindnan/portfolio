@@ -12,9 +12,12 @@ function Homepage() {
     <>
     <div className="mx-auto w-[95%] lg:w-[90%] xl:w-[90%] 2xl:w-[75%] ">
       <PersonalInfoBlock/>
+      <div className="mx-2 md:mx-0">
+
       <WorkExperienceBlock/>
       <ProjectsBlock/>
       <EducationBlock/>
+      </div>
       <IntrestsBlock/>
     </div>
       <Footer/>
