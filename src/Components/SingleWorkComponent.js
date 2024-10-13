@@ -6,7 +6,7 @@ function SingleWorkComponent( props) {
   return (
     <div   className=" flex flex-row  my-2    border-black border-[0px]  rounded-[10px] rounded-l-[0px]">
      <div data-aos-duration="2000" data-aos="fade-up"  data-aos-anchor-placement="bottom" className='w-[5px] rounded-[0px] bg-black'></div>      
-           <div onClick={()=>{activeTabId!==data?.workId?setActiveTabId(data?.workId):setActiveTabId("none")}} data-aos="fade-up" data-aos-duration="1000"   data-aos-anchor-placement="bottom" className="flex flex-col w-full p-3 md:p-4">
+           <div onClick={()=>{activeTabId!==data?.workId?setActiveTabId(data?.workId):setActiveTabId("none")}} data-aos="fade-up" data-aos-duration="1000"   data-aos-anchor-placement="bottom" className="flex flex-col w-full p-3 cursor-pointer md:p-4">
             <div className='flex flex-row items-center justify-between '>
                 <div className='flex flex-col flex-1 '>
                     <div className=' text-[10px] md:text-[12px] px-2 font-semibold rounded-[0px] w-fit bg-[#000000] text-white'> {data?.duration}</div>
