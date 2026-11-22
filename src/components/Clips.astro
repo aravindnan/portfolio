@@ -1,0 +1,22 @@
+---
+/** A row of clips under one heading. */
+import Clip from './Clip.astro';
+interface Item { src: string; poster: string; alt: string; caption?: string }
+interface Props { title: string; items: Item[] }
+const { title, items } = Astro.props;
+const id = 'c-' + title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+<section class="clips wrap" aria-labelledby={id}>
+  <h2 id={id} class="voice" data-split>{title}</h2>
+  <div class="row">
+    {items.map((it, i) => <div class:list={['cell', i === 0 && 'lead']}><Clip {...it} /></div>)}
+  </div>
+</section>
+<style>
+  .clips { padding-top: 160px; }
+  h2 { font-size: var(--step-2); margin-bottom: 48px; }
+  .row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 56px var(--g); }
+  .cell { grid-column: span 6; }
+  .cell.lead { grid-column: 1 / -1; }
+  @media (max-width: 900px) { .cell { grid-column: 1 / -1; } }
+</style>

@@ -1,0 +1,106 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import { photos } from '../data/gallery';
+import { site, u, homeTheme, themeVars, type Theme } from '../data/site';
+
+interface Props { title: string; description: string; theme?: Theme; current?: 'work' | 'about' | 'home' | 'gallery' }
+const { title, description, theme = homeTheme, current } = Astro.props;
+const fullTitle = current === 'home' ? `${site.name}: ${site.role}` : `${title} · ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Every page change: the old page leaves through the top as the new one rises from below.
+const slide = { name: '', duration: '1s', easing: 'cubic-bezier(.76, 0, .24, 1)', fillMode: 'both' };
+const slideUp = {
+  forwards: { old: { ...slide, name: 'vt-out' }, new: { ...slide, name: 'vt-in' } },
+  backwards: { old: { ...slide, name: 'vt-out' }, new: { ...slide, name: 'vt-in' } },
+};
+---
+<!doctype html>
+<html lang="en" style={themeVars(theme)} transition:animate={slideUp}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content={theme.ground} />
+    <link rel="icon" type="image/svg+xml" href={u('favicon.svg')} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet" />
+    <ClientRouter fallback="animate" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+    <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'Person', name: site.name, jobTitle: site.role, sameAs: [site.linkedin, site.github] })} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="nav" data-nav>
+      <a class="mark" href={u('/')} aria-label={`${site.name}, home`}><span class="full">{site.name}</span><span class="short" aria-hidden="true">Aravind N.</span></a>
+      <span class="now" aria-live="polite" data-now></span>
+      <nav aria-label="Main">
+        <ul>
+          <li><a class="wipe-link" href={u('work/')} aria-current={current === 'work' ? 'page' : undefined}>Work</a></li>
+          {photos.length > 0 && <li><a class="wipe-link" href={u('gallery/')} aria-current={current === 'gallery' ? 'page' : undefined}>Gallery</a></li>}
+          <li><a class="wipe-link" href={u('about/')} aria-current={current === 'about' ? 'page' : undefined}>About</a></li>
+          <li><a class="wipe-link" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main id="main"><slot /></main>
+    <footer id="contact" class="foot wrap">
+      <p class="foot-ask" data-lines>Have a product that needs designing and building?</p>
+      <a class="foot-mail voice" href={`mailto:${site.email}`} data-lines>{site.email}</a>
+      <div class="foot-row meta">
+        <span>{site.name} · {site.from} · {site.now}</span>
+        <span><a class="wipe-link" href={u(site.resume)} download="Aravind_Nandakumar_Resume.pdf" data-astro-reload>Résumé</a> · <a class="wipe-link" href={site.linkedin}>LinkedIn</a> · <a class="wipe-link" href={site.github}>GitHub</a></span>
+      </div>
+    </footer>
+    <script>
+      import { onPage } from '../scripts/page';
+      import { initShaders } from '../scripts/shaders';
+      import { initMotion } from '../scripts/motion';
+      import { initLiquid } from '../scripts/liquid';
+      import { initLightbox } from '../scripts/lightbox';
+      onPage((ctx) => {
+        // reveal the parts of each section once, as it enters (the fallback when GSAP motion is off)
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        }, { rootMargin: '0px 0px -10% 0px' });
+        document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+        const stops = [initShaders(), initLiquid(), initLightbox(), initMotion(ctx)];
+        return () => { io.disconnect(); stops.forEach((f) => typeof f === 'function' && f()); };
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 16px var(--m); font-size: 14px;
+    color: var(--nav-ink, var(--ink)); background: var(--nav-ground, var(--ground));
+    transition: color .6s var(--ease), background-color .6s var(--ease), translate .4s var(--ease);
+  }
+  .nav.away { translate: 0 -100%; }
+  .mark { font-weight: 800; text-decoration: none; letter-spacing: -.01em; }
+  .now { opacity: .7; }
+  .nav ul { display: flex; gap: 28px; list-style: none; padding: 0; }
+  .nav a { text-decoration: none; padding-block: 6px; }
+  .short { display: none; }
+  @media (max-width: 700px) { .now { display: none; } .nav ul { gap: 16px; } .full { display: none; } .short { display: inline; } }
+
+  .foot { padding-top: 200px; padding-bottom: 32px; background: var(--ground); color: var(--ink); overflow-x: clip; }
+  .foot-ask { font-size: var(--step-3); letter-spacing: -.015em; max-width: 24ch; line-height: 1.2; }
+  .foot-mail {
+    display: block; margin-top: 24px; font-size: min(4.4vw, 84px); white-space: nowrap; text-decoration: none;
+    overflow-wrap: anywhere; background: linear-gradient(currentColor, currentColor) 0 100% / 0 4px no-repeat;
+    transition: background-size .5s var(--ease); padding-bottom: 8px; width: fit-content;
+  }
+  .foot-mail:hover, .foot-mail:focus-visible { background-size: 100% 4px; }
+  .foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 64px; }
+</style>

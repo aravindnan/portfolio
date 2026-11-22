@@ -1,0 +1,60 @@
+---
+/**
+ * Then and now: two screens of the same page, one over the other, split by a seam you drag
+ * (or move with the arrow keys). Until someone touches it, the seam drifts gently to show it moves.
+ */
+import { u } from '../data/site';
+interface Props { title: string; before: string; after: string; beforeAlt: string; afterAlt: string; beforeLabel?: string; afterLabel?: string; caption?: string }
+const { title, before, after, beforeAlt, afterAlt, beforeLabel = 'Before', afterLabel = 'After', caption } = Astro.props;
+const id = 'cmp-' + title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+<section class="cmp wrap" aria-labelledby={id}>
+  <h2 id={id} class="voice" data-split>{title}</h2>
+  <figure class="stage" data-compare data-curtain style="--pos:50%">
+    <div class="mat">
+      <div class="layers">
+        <img class="after" src={u(after)} alt={afterAlt} width="1800" height="1125" loading="lazy" />
+        <img class="before" src={u(before)} alt={beforeAlt} width="1800" height="1012" loading="lazy" />
+        <span class="seam" aria-hidden="true"><span class="knob">⇆</span></span>
+        <span class="tag l">{beforeLabel}</span>
+        <span class="tag r">{afterLabel}</span>
+      </div>
+    </div>
+    <label class="sr" for={`${id}-r`}>Show more of {beforeLabel} or {afterLabel}</label>
+    <input id={`${id}-r`} class="range" type="range" min="0" max="100" value="50" data-compare-range />
+    {caption && <figcaption class="meta">{caption}</figcaption>}
+  </figure>
+</section>
+<style>
+  .cmp { padding-top: 160px; }
+  h2 { font-size: var(--step-2); margin-bottom: 40px; }
+  .stage { position: relative; }
+  .mat { background: var(--surface); padding: clamp(12px, 2.4vw, 40px); }
+  .layers { position: relative; overflow: hidden; aspect-ratio: 16 / 10; cursor: ew-resize; touch-action: pan-y; }
+  .layers img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .seam { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 3px; translate: -1.5px 0; background: var(--accent); }
+  .knob { position: absolute; top: 50%; left: 50%; translate: -50% -50%; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); font-weight: 700; transition: scale .3s var(--ease-s); }
+  .layers:hover .knob { scale: 1.12; }
+  .tag { position: absolute; bottom: 14px; padding: 6px 10px; font-size: 13px; font-weight: 600; background: var(--ink); color: var(--ground); }
+  .tag.l { left: 14px; } .tag.r { right: 14px; }
+  .range { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+  .range:focus-visible + figcaption, .stage:has(.range:focus-visible) .knob { outline: 2px solid var(--ink); outline-offset: 3px; }
+  figcaption { margin-top: 14px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+</style>
+<script>
+  import gsap from 'gsap';
+  import { onPage } from '../scripts/page';
+  onPage((ctx) => { ctx.add(() => {
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.querySelectorAll<HTMLElement>('[data-compare]').forEach((fig) => {
+        const range = fig.querySelector<HTMLInputElement>('[data-compare-range]')!;
+        const state = { p: 50 };
+        const apply = () => fig.style.setProperty('--pos', state.p + '%');
+        let touched = false;
+        range.addEventListener('input', () => { touched = true; idle?.kill(); gsap.to(state, { p: Number(range.value), duration: 0.35, ease: 'power3.out', onUpdate: apply }); });
+        const idle = still ? null : gsap.to(state, { p: 38, duration: 1.8, ease: 'sine.inOut', yoyo: true, repeat: -1, onUpdate: () => { if (!touched) { apply(); range.value = String(Math.round(state.p)); } } });
+      });
+    }); });
+</script>

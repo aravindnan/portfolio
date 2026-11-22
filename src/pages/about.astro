@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, u, monoTheme, shaderColors } from '../data/site';
+
+const timeline = [
+  ['2025, now', 'Front-end engineer', 'CodeWalnut, Bangalore'],
+  ['2023 to 2025', 'Master of Computer Applications', 'Christ University, Bangalore'],
+  ['2022 to 2023', 'React developer', 'Netstratum Technologies, Kochi'],
+  ['2021', 'UI/UX design intern', 'Youth Empowerment Foundation, remote'],
+  ['2019 to 2022', 'BSc Computer Applications', 'Sacred Heart College, Kerala'],
+];
+---
+<Base title="About" current="about" theme={monoTheme} description="Aravind Nandakumar is a front-end engineer at CodeWalnut in Bangalore who designs what he builds.">
+  <section class="hero wrap grid">
+    <div class="shader" data-shader="grain" data-colors={shaderColors(monoTheme)}></div>
+    <h1 class="voice h over" data-split data-intro>I draw it first. Then I ship it.</h1>
+    <dl class="now over">
+      <div data-reveal><dt>Now</dt><dd>Front-end engineer at CodeWalnut</dd></div>
+      <div data-reveal style="--i:1"><dt>Based in</dt><dd>Bangalore, from Kochi</dd></div>
+      <div data-reveal style="--i:2"><dt>Works in</dt><dd>React, TypeScript, Next.js</dd></div>
+    </dl>
+    <div class="story over" data-reveal style="--i:2">
+      <p>I'm Aravind, a front-end engineer at CodeWalnut in Bangalore. I'm from Kochi.</p>
+      <p>I started in Figma as a UI/UX intern, designing a public app for an NGO. I wanted to see my screens work, so I learned to build them: React at Netstratum, a master's at Christ University, and now front-end work at CodeWalnut.</p>
+      <p>I work in both directions. I sketch until the idea is clear, then build it and let the real thing correct the sketch. The fest sites taught me to set a strong theme. Cirrh0 taught me to say plainly what a number means and what it doesn't.</p>
+    </div>
+  </section>
+
+  <section class="wrap grid cols" aria-labelledby="tools">
+    <h2 id="tools" class="voice sub" data-split>What I work with</h2>
+    <div class="col" data-reveal style="--i:1"><h3>Design</h3><ul>{site.design.map((t) => <li>{t}</li>)}</ul></div>
+    <div class="col" data-reveal style="--i:2"><h3>Build</h3><ul>{site.build.map((t) => <li>{t}</li>)}</ul></div>
+  </section>
+
+  <section class="wrap grid tl" aria-labelledby="path">
+    <h2 id="path" class="voice sub" data-split>Where I've been</h2>
+    <table data-reveal style="--i:1">
+      <caption class="sr">Work and education</caption>
+      <tbody>
+        {timeline.map(([when, what, where]) => <tr><td class="when">{when}</td><td>{what}</td><td class="where">{where}</td></tr>)}
+      </tbody>
+    </table>
+    <p class="cv" data-reveal style="--i:2"><a class="btn" href={u(site.resume)} download="Aravind_Nandakumar_Resume.pdf" data-astro-reload>Download résumé (PDF)</a></p>
+  </section>
+</Base>
+
+<style>
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .hero { position: relative; padding-top: 150px; row-gap: 64px; align-items: start; }
+  .hero > .shader { bottom: 20%; -webkit-mask-image: linear-gradient(#000 50%, transparent); mask-image: linear-gradient(#000 50%, transparent); }
+  .h { grid-column: 1 / -1; font-size: var(--step-1); max-width: 13ch; }
+  .now { grid-column: 1 / 6; display: grid; gap: 28px; margin: 0; }
+  .now dt { font-size: 14px; color: var(--muted); }
+  .now dd { margin: 4px 0 0; font-size: clamp(22px, 2.2vw, 32px); letter-spacing: -.02em; line-height: 1.15; font-weight: 600; }
+  .story { grid-column: 7 / 13; font-size: 19px; display: grid; gap: 1em; max-width: 56ch; }
+  @media (max-width: 900px) { .now, .story { grid-column: 1 / -1; } }
+
+  .cols, .tl { padding-top: 160px; row-gap: 32px; }
+  .sub { grid-column: 1 / 6; font-size: var(--step-2); }
+  .col { grid-column: span 3; }
+  .col h3 { font-size: 15px; color: var(--muted); font-weight: 500; margin-bottom: 12px; }
+  .col ul { list-style: none; padding: 0; font-size: clamp(20px, 1.8vw, 26px); letter-spacing: -.015em; line-height: 1.35; }
+  table { grid-column: 7 / 13; border-collapse: collapse; font-size: 16px; }
+  td { padding: 14px 12px 14px 0; border-top: 1.5px solid var(--ink); vertical-align: top; }
+  tr:last-child td { border-bottom: 1.5px solid var(--ink); }
+  .when { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .where { color: var(--muted); }
+  .cv { grid-column: 7 / 13; }
+  @media (max-width: 900px) { .sub, table, .cv { grid-column: 1 / -1; } .col { grid-column: span 6; } .where { display: none; } }
+</style>

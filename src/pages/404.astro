@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { u, homeTheme, shaderColors } from '../data/site';
+---
+<Base title="Not found" description="This page doesn't exist.">
+  <section class="nf wrap">
+    <div class="shader" data-shader="grain" data-colors={shaderColors(homeTheme)}></div>
+    <h1 class="voice over" data-split data-intro>This page hasn't been built yet.</h1>
+    <p class="over">Maybe it's still a sketch. The finished work is this way.</p>
+    <a class="btn over" href={u('work/')}>See the work</a>
+  </section>
+</Base>
+<style>
+  .nf { position: relative; min-height: 90vh; display: grid; align-content: end; gap: 24px; justify-items: start; padding-bottom: 8vh; animation: tint 18s linear infinite; }
+  h1 { font-size: var(--step-1); max-width: 12ch; }
+  p { font-size: 19px; }
+  @keyframes tint {
+    0%, 100% { background: #E9E9E4; } 16% { background: #FFFFFF; } 33% { background: #F3EEEA; }
+    50% { background: #DCE6E9; } 66% { background: #F2E4C4; } 83% { background: #F7C9D6; }
+  }
+</style>

@@ -1,0 +1,88 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { u, themeVars, shaderColors } from '../../data/site';
+
+export async function getStaticPaths() {
+  const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+  return work.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, next: work[(i + 1) % work.length] } }));
+}
+interface Props { entry: CollectionEntry<'work'>; next: CollectionEntry<'work'> }
+const { entry, next } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+---
+<Base title={d.title} current="work" theme={d.theme} description={`${d.title}: ${d.line} ${d.summary}`.slice(0, 158)}>
+  <div class="top">
+  <div class="shader" data-liquid={d.shader} data-colors={shaderColors(d.theme)}></div>
+  <section class="hero wrap grid over">
+    <h1 class="voice t" data-split data-intro>{d.title}</h1>
+    <p class="line" data-lines>{d.line}</p>
+    <div class="sum" data-reveal style="--i:3">
+      <p>{d.summary}</p>
+      <div class="acts">
+        {d.live && <a class="btn" href={d.live}>Open the live site<span aria-hidden="true">↗</span></a>}
+        {d.source && <a class="btn ghost" href={d.source}>Source code<span aria-hidden="true">↗</span></a>}
+      </div>
+    </div>
+  </section>
+
+  <figure class="cover wrap over">
+    <div class="mat" data-curtain data-follow={d.live ? 'Live site' : 'View'}><img src={u(d.cover)} alt={d.coverAlt} width="1440" height="900" /></div>
+  </figure>
+  </div>
+
+  <section class="facts wrap" aria-label="Project facts">
+    <dl class="grid">
+      <div data-reveal><dt>Role</dt><dd>{d.role}</dd></div>
+      <div data-reveal style="--i:1"><dt>Team</dt><dd>{d.team}</dd></div>
+      <div data-reveal style="--i:2"><dt>Timeline</dt><dd>{d.timeline}</dd></div>
+      <div data-reveal style="--i:3"><dt>Kind</dt><dd>{d.category}, {d.year}</dd></div>
+      <div class="stack" data-reveal style="--i:4"><dt>Built with</dt><dd class="chips">{d.stack.map((t) => <span>{t}</span>)}</dd></div>
+    </dl>
+  </section>
+
+  <article class="story"><Content /></article>
+
+  <a class="next" href={u(`work/${next.id}/`)} style={themeVars(next.data.theme)} data-follow="Next">
+    <span class="shader" data-shader={next.data.shader} data-colors={shaderColors(next.data.theme)}></span>
+    <span class="wrap nx over">
+            <span class="voice nt" data-split>{next.data.title}</span>
+      <span class="nl">{next.data.line}</span>
+    </span>
+  </a>
+</Base>
+
+<style>
+  .top { position: relative; }
+  .top > .shader { bottom: 30%; -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
+  .hero { padding-top: 140px; row-gap: 20px; }
+  .t { grid-column: 1 / -1; font-size: clamp(52px, 12vw, 216px); margin-left: -.05em; overflow-wrap: break-word; }
+  .line { grid-column: 1 / 7; font-size: clamp(24px, 2.6vw, 40px); line-height: 1.1; letter-spacing: -.02em; font-weight: 500; margin-top: 12px; }
+  .sum { grid-column: 8 / 13; font-size: 18px; margin-top: 12px; }
+  .acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  @media (max-width: 900px) { .line, .sum { grid-column: 1 / -1; } }
+
+  .cover { margin-top: 80px; }
+  .cover .mat { background: var(--surface); padding: clamp(12px, 3.2vw, 56px) clamp(12px, 3.2vw, 56px) 0; overflow: hidden; }
+  .cover img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent); }
+
+  .facts { margin-top: 48px; }
+  .facts dl { row-gap: 28px; }
+  .facts div { grid-column: span 3; }
+  .facts .stack { grid-column: span 12; }
+  .facts dt { font-size: 14px; color: var(--muted); margin-bottom: 4px; }
+  .facts dd { margin: 0; font-size: 17px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px !important; }
+  .chips span { background: var(--surface); padding: 6px 12px; font-size: 15px; transition: background-color .3s var(--ease-s), color .3s var(--ease-s); }
+  .chips span:hover { background: var(--accent); color: var(--on-accent); }
+  @media (max-width: 900px) { .facts div { grid-column: span 6; } .facts .stack { grid-column: 1 / -1; } }
+
+  .next { position: relative; display: block; margin-top: 200px; background: var(--ground); color: var(--ink); text-decoration: none; overflow: hidden; }
+  .nx { display: grid; gap: 14px; padding-top: 96px; padding-bottom: 120px; }
+  .next .meta { color: var(--muted); }
+  .nt { font-size: clamp(52px, 11vw, 200px); margin-left: -.05em; transition: translate .6s var(--ease); }
+  .nl { font-size: var(--step-3); letter-spacing: -.015em; }
+  .next:hover .nt, .next:focus-visible .nt { translate: 24px 0; }
+  .next:focus-visible { outline-offset: -6px; }
+</style>

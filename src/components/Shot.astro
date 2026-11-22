@@ -1,0 +1,21 @@
+---
+/** One screenshot, set large. size: wide spans the grid, full bleeds to the margins. */
+import { u } from '../data/site';
+interface Props { src: string; alt: string; caption?: string; size?: 'wide' | 'full' | 'phone'; w?: number; h?: number }
+const { src, alt, caption, size = 'wide', w = 1440, h = 900 } = Astro.props;
+---
+<figure class:list={['shot wrap', size]}>
+  <div class="mat" data-window><img src={u(src)} alt={alt} width={size === 'phone' ? 390 : w} height={size === 'phone' ? 844 : h} loading="lazy" /></div>
+  {caption && <figcaption class="meta">{caption}</figcaption>}
+</figure>
+<style>
+  .shot { margin-top: 96px; }
+  .mat { background: var(--surface); padding: clamp(12px, 3.2vw, 56px); }
+  .shot img { width: 100%; box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent); }
+  .wide .mat { max-width: calc(100% * 10 / 12); margin-left: auto; }
+  .wide figcaption { max-width: calc(100% * 10 / 12); margin-left: auto; }
+  .phone .mat { width: min(420px, 86vw); margin-left: auto; margin-right: calc(100% / 12); }
+  .phone figcaption { text-align: right; margin-right: calc(100% / 12); }
+  figcaption { margin-top: 14px; max-width: 60ch; }
+  @media (max-width: 900px) { .wide .mat, .wide figcaption { max-width: 100%; } .phone .mat { margin-inline: auto; } .phone figcaption { text-align: left; } }
+</style>

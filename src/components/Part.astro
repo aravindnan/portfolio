@@ -1,0 +1,24 @@
+---
+/** A chapter of a case study: the Design half or the Build half, or a plain chapter. */
+interface Props { title: string; kind?: string }
+const { title } = Astro.props;
+const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+<section class="part wrap grid" aria-labelledby={id}>
+  <div class="side">
+    <h2 id={id} class="voice" data-split>{title}</h2>
+  </div>
+  <div class="body" data-reveal style="--i:2"><slot /></div>
+</section>
+<style>
+  .part { padding-top: 160px; row-gap: 32px; }
+  .side { grid-column: 1 / 6; align-self: start; position: sticky; top: 96px; }
+  h2 { font-size: var(--step-2); }
+  .body { grid-column: 7 / 13; font-size: 18px; }
+  .body :global(p + p), .body :global(p + ul), .body :global(ul + p) { margin-top: 1em; }
+  .body :global(ul) { padding-left: 1.1em; }
+  .body :global(li + li) { margin-top: .5em; }
+  .body :global(strong) { font-weight: 650; }
+  .body :global(h3) { font-size: 22px; letter-spacing: -.015em; line-height: 1.2; margin: 1.6em 0 .5em; }
+  @media (max-width: 900px) { .side, .body { grid-column: 1 / -1; } .side { position: static; } }
+</style>

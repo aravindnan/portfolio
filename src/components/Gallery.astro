@@ -1,0 +1,161 @@
+---
+/**
+ * The screens of a project, told as a story.
+ * Desktop screens: a pinned frame where each screen wipes up over the last as you scroll, with the
+ * caption and a counter beside it. Phone screens: a hand of cards that fans out into a row.
+ * Without motion (or on small screens) both fall back to a plain, complete list.
+ */
+import { u } from '../data/site';
+interface Item { src: string; alt: string; caption?: string; phone?: boolean }
+interface Props { title: string; items: Item[] }
+const { title, items } = Astro.props;
+const id = 'g-' + title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const desk = items.filter((i) => !i.phone);
+const phones = items.filter((i) => i.phone);
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<section class="gallery" aria-labelledby={id}>
+  <h2 id={id} class="voice wrap gh" data-split>{title}</h2>
+
+  {desk.length > 0 && (
+    <div class="story" data-story style={`--n:${desk.length}`}>
+      <div class="sticky wrap">
+        <p class="count voice" aria-hidden="true"><span data-story-n>01</span><span class="of">/{pad(desk.length)}</span></p>
+        <span class="track" aria-hidden="true"><span data-story-bar></span></span>
+        <ol class="frames" role="list">
+          {desk.map((it, i) => (
+            <li class="frame" data-frame>
+              <button type="button" class="open shot-btn" data-zoom data-group={id} data-src={u(it.src)} data-alt={it.alt} data-caption={it.caption ?? ''} aria-label={`Open larger: ${it.alt}`} data-follow="Enlarge">
+                <img src={u(it.src)} alt={it.alt} width="1440" height="900" loading={i < 2 ? 'eager' : 'lazy'} />
+              </button>
+              {it.caption && <p class="cap"><span class="ci meta">{pad(i + 1)}</span>{it.caption}</p>}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  )}
+
+  {phones.length > 0 && (
+    <div class="fan wrap" data-fan>
+      <ul class="hand" role="list">
+        {phones.map((it, i) => (
+          <li class="card" data-card style={`--k:${i - (phones.length - 1) / 2}`}>
+            <button type="button" class="open" data-zoom data-group={id + '-phone'} data-src={u(it.src)} data-alt={it.alt} aria-label={`Open larger: ${it.alt}`} data-follow="Enlarge">
+              <img src={u(it.src)} alt={it.alt} width="390" height="844" loading="lazy" />
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+</section>
+
+<style>
+  .gallery { padding-top: 160px; }
+  .gh { font-size: var(--step-2); margin-bottom: 56px; }
+
+  /* static layout: every screen with its caption, readable without any script */
+  .frames { list-style: none; padding: 0; display: grid; gap: 72px; }
+  .frame { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--g); align-items: end; }
+  .shot-btn { grid-column: 4 / 13; }
+  .cap { grid-column: 1 / 4; grid-row: 1; font-size: 18px; line-height: 1.4; letter-spacing: -.01em; }
+  .ci { display: block; margin-bottom: 8px; }
+  .count, .track { display: none; }
+  @media (max-width: 900px) { .shot-btn, .cap { grid-column: 1 / -1; } .cap { grid-row: 2; } }
+
+  .open { display: block; width: 100%; padding: clamp(10px, 1.6vw, 22px) clamp(10px, 1.6vw, 22px) 0; border: 0; background: var(--surface); cursor: zoom-in; overflow: hidden; }
+  .open img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent); transition: scale .8s var(--ease); }
+  .open:hover img, .open:focus-visible img { scale: 1.025; }
+
+  /* pinned story (added by script on large screens with motion) */
+  :global(.motion) .story.pin { height: calc(var(--n) * 85vh + 100vh); }
+  :global(.motion) .story.pin .sticky { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--g); align-items: center; }
+  :global(.motion) .story.pin .count { display: block; grid-column: 1 / 4; align-self: start; margin-top: 18vh; font-size: clamp(64px, 9vw, 150px); }
+  :global(.motion) .story.pin .of { font-size: .32em; color: var(--muted); margin-left: .15em; letter-spacing: 0; }
+  :global(.motion) .story.pin .track { display: block; position: absolute; left: var(--m); bottom: 12vh; width: calc((100% - 2 * var(--m)) * 3 / 12 - var(--g)); height: 3px; background: var(--surface); }
+  :global(.motion) .story.pin .track span { display: block; height: 100%; background: var(--accent); transform-origin: left; scale: 0 1; }
+  :global(.motion) .story.pin .frames { position: absolute; inset: 0 var(--m); display: block; }
+  :global(.motion) .story.pin .frame { position: absolute; inset: 0; align-items: center; pointer-events: none; }
+  :global(.motion) .story.pin .shot-btn { pointer-events: auto; }
+  :global(.motion) .story.pin .cap { align-self: end; margin-bottom: 18vh; font-size: clamp(20px, 1.7vw, 26px); }
+  :global(.motion) .story.pin .ci { display: none; }
+
+  /* phone fan */
+  .fan { padding-top: 120px; }
+  .fan-cap { margin-bottom: 28px; }
+  .hand { list-style: none; padding: 0; display: flex; justify-content: center; gap: clamp(12px, 2vw, 32px); }
+  .card { flex: 0 1 260px; }
+  .card .open { padding: 10px; border-radius: 22px; }
+  .card .open img { aspect-ratio: 390 / 844; border-radius: 14px; }
+  @media (max-width: 900px) {
+    .hand { justify-content: flex-start; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin-inline: calc(var(--m) * -1); padding-inline: var(--m); }
+    .card { flex: 0 0 62vw; scroll-snap-align: center; }
+  }
+
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+  import { onPage } from '../scripts/page';
+  onPage((ctx) => { ctx.add(() => {
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const wide = matchMedia('(min-width: 901px)').matches;
+
+    for (const g of document.querySelectorAll<HTMLElement>('.gallery')) {
+      if (still) continue;
+
+      // pinned story: each screen wipes up over the last; the caption and counter follow
+      const story = g.querySelector<HTMLElement>('[data-story]');
+      if (story && wide) {
+        story.classList.add('pin');
+        const frames = [...story.querySelectorAll<HTMLElement>('[data-frame]')];
+        const num = story.querySelector<HTMLElement>('[data-story-n]')!;
+        const bar = story.querySelector<HTMLElement>('[data-story-bar]')!;
+        frames.forEach((f, i) => {
+          const shot = f.querySelector('.shot-btn')!; const cap = f.querySelector('.cap');
+          if (i > 0) { gsap.set(shot, { clipPath: 'inset(100% 0% 0% 0%)' }); if (cap) gsap.set(cap, { autoAlpha: 0, yPercent: 40 }); }
+        });
+        const tl = gsap.timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: story, start: 'top top', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true,
+            onUpdate: (st) => {
+              const i = Math.min(frames.length - 1, Math.round(st.progress * (frames.length - 1)));
+              num.textContent = String(i + 1).padStart(2, '0');
+            },
+          },
+        });
+        tl.to(bar, { scale: 1, duration: frames.length - 1 || 1 }, 0);
+        frames.forEach((f, i) => {
+          if (i === 0) return;
+          const prev = frames[i - 1];
+          const at = i - 1;
+          tl.to(f.querySelector('.shot-btn'), { clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'power2.inOut' }, at)
+            .fromTo(f.querySelector('.shot-btn img'), { scale: 1.15 }, { scale: 1, duration: 1, ease: 'power2.out' }, at)
+            .to(prev.querySelector('.shot-btn'), { scale: 0.9, yPercent: -6, duration: 1 }, at)
+            .to(prev.querySelector('.shot-btn'), { autoAlpha: 0, duration: 0.25 }, at + 0.8)
+            .to(prev.querySelector('.cap'), { autoAlpha: 0, yPercent: -40, duration: 0.4 }, at)
+            .to(f.querySelector('.cap'), { autoAlpha: 1, yPercent: 0, duration: 0.5 }, at + 0.5);
+        });
+      }
+
+      // phone fan: a stacked hand of cards spreads into a row
+      const fan = g.querySelector<HTMLElement>('[data-fan]');
+      if (fan && wide) {
+        const cards = [...fan.querySelectorAll<HTMLElement>('[data-card]')];
+        const mid = (cards.length - 1) / 2;
+        gsap.from(cards, {
+          x: (i: number, el: HTMLElement) => (mid - i) * (el.offsetWidth + 24) * 0.92,
+          rotate: (i: number) => (i - mid) * 7,
+          y: (i: number) => Math.abs(i - mid) * 18,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: fan, start: 'top 85%', end: 'top 25%', scrub: 0.8 },
+        });
+      }
+    }
+  }); });
+</script>

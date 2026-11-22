@@ -1,0 +1,119 @@
+/* Tokens. Every page sets --ground/--ink/--accent/... on <html>; a project page swaps them for its own. */
+:root {
+  --ground: #E9E9E4;
+  --ink: #111111;
+  --muted: #5C5C57;
+  --surface: #DEDED8;
+  --accent: #1E3BEF;
+  --on-accent: #FFFFFF;
+  --wdth: 112;
+  --wght: 850;
+  --slnt: normal;
+  --case: none;
+  --track: -0.045em;
+
+  --m: 32px;
+  --g: 24px;
+  --ease: cubic-bezier(.76, 0, .24, 1);
+  --ease-s: cubic-bezier(.2, .7, .2, 1);
+  --step-display: clamp(34px, 10.6vw, 196px);
+  --step-1: clamp(44px, 7vw, 120px);
+  --step-2: clamp(30px, 4vw, 60px);
+  --step-3: clamp(21px, 1.9vw, 28px);
+}
+@media (max-width: 700px) { :root { --m: 16px; --g: 16px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+html {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Archivo", system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body { min-height: 100vh; }
+img, video { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+p a, li a { text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+::selection { background: var(--accent); color: var(--on-accent); }
+
+.skip { position: absolute; left: var(--m); top: -100px; z-index: 100; background: var(--ink); color: var(--ground); padding: 10px 14px; }
+.skip:focus { top: 12px; }
+
+.wrap { padding-inline: var(--m); }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--g); }
+
+/* type voice: the display face carries each project's character */
+.voice {
+  font-variation-settings: "wdth" var(--wdth);
+  font-weight: var(--wght);
+  font-style: var(--slnt);
+  text-transform: var(--case);
+  letter-spacing: var(--track);
+  line-height: .88;
+}
+
+/* links in the motion verb: an underline that wipes in */
+.wipe-link { text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat; transition: background-size .28s var(--ease-s); }
+.wipe-link:hover, .wipe-link:focus-visible, .wipe-link[aria-current="page"] { background-size: 100% 1.5px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 15px 22px; background: var(--accent); color: var(--on-accent);
+  font-weight: 600; font-size: 15px; text-decoration: none; border: 0; cursor: pointer;
+  transition: translate .28s var(--ease-s), box-shadow .28s var(--ease-s);
+}
+.btn:hover, .btn:focus-visible { translate: 0 -3px; box-shadow: 0 3px 0 var(--ink); }
+.btn:active { translate: 0 0; box-shadow: none; }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.btn.ghost:hover, .btn.ghost:focus-visible { box-shadow: inset 0 0 0 1.5px var(--ink), 0 3px 0 var(--ink); }
+
+.meta { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* reveal: parts of a section rise in, staggered; content is visible without JS */
+.js [data-reveal] { opacity: 0; translate: 0 24px; transition: opacity .7s var(--ease-s), translate .7s var(--ease-s); transition-delay: calc(var(--i, 0) * 70ms); }
+.js [data-reveal].in { opacity: 1; translate: 0 0; }
+
+/* page change: one continuous slide up. The old page leaves through the top as the new one
+   arrives from below, joined edge to edge, so it reads as a single scroll. */
+::view-transition-group(root) { animation: none !important; }
+::view-transition-image-pair(root) { isolation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { mix-blend-mode: normal; animation-duration: 1s; animation-timing-function: cubic-bezier(.76, 0, .24, 1); animation-fill-mode: both; }
+::view-transition-old(root) { animation-name: vt-out; }
+::view-transition-new(root) { animation-name: vt-in; }
+@keyframes vt-out { from { transform: translateY(0); } to { transform: translateY(-100%); } }
+@keyframes vt-in { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+/* the enlarge view: centred, fitted, page locked */
+html.zoom-open, html.zoom-open body { overflow: hidden; overscroll-behavior: none; }
+.zoom { position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  background: var(--ground); color: var(--ink); overflow: hidden; }
+.zoom[open] { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+.zoom::backdrop { background: transparent; }
+.zoom-fig { display: grid; place-items: center; align-content: center; gap: 12px; min-height: 0; padding: clamp(16px, 4vw, 48px) var(--m) 8px; margin: 0; }
+.zoom-fig img { display: block; width: auto; height: auto; max-width: 100%; max-height: calc(100dvh - 150px); object-fit: contain;
+  box-shadow: 0 24px 60px -20px color-mix(in srgb, var(--ink) 35%, transparent); }
+.zoom-fig figcaption { text-align: center; max-width: 60ch; }
+.zoom-bar { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 12px; padding: 12px var(--m) max(20px, env(safe-area-inset-bottom)); }
+.zoom-bar [hidden] { display: none; }
+
+/* the pointer label over work */
+.follow {
+  position: fixed; left: 0; top: 0; z-index: 90; pointer-events: none;
+  width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--fb, #111); color: var(--fc, #fff); font: 600 14px "Archivo", sans-serif;
+}
+.motion [data-curtain] { clip-path: inset(100% 0 0 0); }
+.motion [data-curtain] img, .motion [data-curtain] video { transform-origin: 50% 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .js [data-reveal] { opacity: 1; translate: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
