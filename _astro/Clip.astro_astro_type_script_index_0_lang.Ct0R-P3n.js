@@ -1,0 +1,1 @@
+import{t as e}from"./page.bZ_1c-Cn.js";e(()=>{let e=matchMedia(`(prefers-reduced-motion: reduce)`).matches,t=new IntersectionObserver(t=>t.forEach(t=>{let n=t.target;t.isIntersecting&&!e?n.play().catch(()=>{}):n.pause()}),{threshold:.35});return document.querySelectorAll(`video[data-loop]`).forEach(e=>t.observe(e)),()=>t.disconnect()});

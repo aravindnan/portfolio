@@ -1,0 +1,1 @@
+import{t as e}from"./page.bZ_1c-Cn.js";e(()=>{let e=[...document.querySelectorAll(`[data-filter]`)],t=[...document.querySelectorAll(`.tile`)];for(let n of e)n.addEventListener(`click`,()=>{let r=n.dataset.filter;e.forEach(e=>e.setAttribute(`aria-pressed`,String(e===n))),t.forEach(e=>{e.hidden=r!==`All`&&e.dataset.cat!==r})})});
