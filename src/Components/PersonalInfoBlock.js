@@ -32,18 +32,6 @@ options={{
 
    }}
  />
-       {/* <Typewriter
-options={{
-     strings: ["Nandakumar"],
-     autoStart: true,
-     loop:true,
-     cursor:"|",
-     delay:200,
-     deleteSpeed:'natural' 
-   }}
- /> */}
-
-
     </div>
     <div data-aos="fade-up" data-aos-duration="1000" data-aos-once={true} className=" md:text-[20px] lg:text-[30px] font-semibold font-mono">{PersonalInformation.status}</div>
     <div data-aos="fade-up" data-aos-duration="1000" data-aos-once={true} className=" mt-8 md:mt-10 text-[14px] md:text-[18px] text-justify md:text-left mx-3 md:mx-auto">

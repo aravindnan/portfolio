@@ -1,6 +1,6 @@
 export const PersonalInformation = {
   name: "Aravind Nandakumar",
-  status: "Computer Science Graduate",
+  status: "Frontend Development | UX Design | Product Design",
   personalDescription: `Results-driven and forward-thinking IT professional with a proven track record in multimedia manipulation, interactive programming.Continually exploring innovative programming methodologies and new desing trends in user experience.
     Seeking an opportunity to apply my expertise, drive user engagement, and contribute to the advancement of groundbreaking projects in a collaborative and fast-paced environment.`,
   city: "Kochi",
@@ -11,10 +11,27 @@ export const PersonalInformation = {
 
 export const WorkExperience = [
   {
+    workId: "we0",
+    jobTitle: "Software Engineer",
+    duration: "January 2025 - Present",
+    companyName: "CodeWalnut, Bangalore",
+    workLink:"#",
+    RRs: [
+      "Accomplished Junior React developer with 9 months of experience in diverse IT projects.",
+      "Had the opportunity to study the fundementals or react developement using Electron JS for creating Desktop Apps",
+      "Proficient in developing applications utilizing technologies such as messaging communication, video conferencing through websockets, and building landing pages using React and the headless content management system, Strapi",
+      "Successfully contributed to the development of a travel booking software, enabling users to conveniently plan and book their holiday trips.",
+      "Skilled in creating visually appealing and user-friendly interfaces using React, Tailwind, and CSS.",
+      "Having a working knowledge of global state management in react using Redux",
+      "Demonstrated ability to work on multiple projects simultaneously, showcasing adaptability and efficiency in a fast-paced environment.",
+      " Problem-solving skills and a passion for creating seamless user experiences through innovative technology solutions.",
+    ],
+  },
+  {
     workId: "we1",
     jobTitle: "Junior React Developer",
     duration: "June 2022 - March 2023",
-    companyName: "Netstratum Technologies Pvt Ltd",
+    companyName: "Netstratum Technologies Pvt Ltd, Kochi",
     workLink:
       "https://drive.google.com/drive/folders/1mJQsOP_QoKO1hqUP4K2Z3myAYSOf9lNW?usp=share_link",
 
@@ -33,7 +50,7 @@ export const WorkExperience = [
     workId: "we2",
     jobTitle: "UI/UX Designer (INTERNSHIP)",
     duration: "May 2021 - June 2021",
-    companyName: "Youth Empowerment Foundation",
+    companyName: "Youth Empowerment Foundation, Delhi(Remote)",
     workLink:
       "https://drive.google.com/drive/folders/1qMhCAWZmnCeiYf4WyjSM9YheERCS4ODK?usp=share_link",
     RRs: [
@@ -116,20 +133,20 @@ export const Projects = [
   //    "Open weather API was inculcated to provide weather data based on users location as well as location based on users choice",
   //  ]},
 
-  {
-    projID: "p4",
-    projectName: "Algorithms and DS",
-    projectMedium: ["C++"],
-    projectLink: "https://github.com/aravindnan/AlogorithmsCPP",
-    projectFeatures: [
-      "To implement basic data structures",
-      "User driven and CLI interface",
-      "Includes operations of Array Data structures like Stack ,Queue and Circular Queue.",
-      "Dynamic Data Stucture operations of Singly and Doubly Linked List.",
-      "Basic implentation of Hash Map, Binary Tree and and Graph.",
-      "Implementation of basic Sorting and Searching on arrays.",
-    ],
-  },
+  // {
+  //   projID: "p4",
+  //   projectName: "Algorithms and DS",
+  //   projectMedium: ["C++"],
+  //   projectLink: "https://github.com/aravindnan/AlogorithmsCPP",
+  //   projectFeatures: [
+  //     "To implement basic data structures",
+  //     "User driven and CLI interface",
+  //     "Includes operations of Array Data structures like Stack ,Queue and Circular Queue.",
+  //     "Dynamic Data Stucture operations of Singly and Doubly Linked List.",
+  //     "Basic implentation of Hash Map, Binary Tree and and Graph.",
+  //     "Implementation of basic Sorting and Searching on arrays.",
+  //   ],
+  // },
 
   //  {projID:"p2",
   //  projectName:"PONG Game",
@@ -184,26 +201,26 @@ export const Projects = [
   //    "Admin dash board to perform CURD operations",
   //  ]},
 
-  {
-    projID: "p1",
-    projectName: "Car Dealership",
-    projectMedium: ["NodeJS", "React JS", "MySQL","Wamp Server","Tailwind CSS"],
-    projectLink: "https://github.com/aravindnan/portfolio",
-    projectFeatures: [
-      "Created a UI design and UX workflow.",
-      "Sample Project Made for Academic Purpose",
-      "Helps users see and compare cars side by side",
-      "Form values taken to Mysql database",
-      "Admin dash board to perform CURD operations",
-    ],
-  },
+  // {
+  //   projID: "p1",
+  //   projectName: "Car Dealership",
+  //   projectMedium: ["NodeJS", "React JS", "MySQL","Wamp Server","Tailwind CSS"],
+  //   projectLink: "https://github.com/aravindnan/portfolio",
+  //   projectFeatures: [
+  //     "Created a UI design and UX workflow.",
+  //     "Sample Project Made for Academic Purpose",
+  //     "Helps users see and compare cars side by side",
+  //     "Form values taken to Mysql database",
+  //     "Admin dash board to perform CURD operations",
+  //   ],
+  // },
 ];
 
 export const Education = [
   {
     eduId: "ed1",
     courseName: "Masters In Computer Application",
-    duration: "Currently Persuing",
+    duration: "June 2023 - May 2025",
     institutionName: "Christ University,Bangalore",
   },
   {
@@ -213,7 +230,7 @@ export const Education = [
     institutionName: "Sacred Heart College,Kerala",
   },
   {
-    eduId: "ed2",
+    eduId: "ed3",
     courseName: "Schooling",
     duration: "Batch of 2019",
     institutionName: "Bhavans Vidya Mandir,Kerala",
@@ -227,12 +244,9 @@ export const Intrests = [
   { name: "Java", logo: "java" },
   { name: "CSS", logo: "css" },
   { name: "HTML", logo: "html" },
-  { name: "AWS", logo: "aws" },
   { name: "Figma", logo: "figma" },
   { name: "C++", logo: "c++" },
-  { name: "DBMS", logo: "dbms" },
   { name: "Git", logo: "git" },
   { name: "Adobe", logo: "illustrator" },
-  { name: "XD", logo: "xd" },
   { name: "UI/UX", logo: "uiux" },
 ];
