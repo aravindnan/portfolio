@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import { u, homeTheme, shaderColors } from '../data/site';
+import { photos } from '../data/gallery';
+
+const items = photos;
+// A rhythm of sizes so the wall never reads as a uniform grid: wide, tall, small...
+const spans = ['s-wide', 's-tall', 's-small', 's-mid', 's-small', 's-tall', 's-wide', 's-mid'];
+---
+<Base title="Gallery" current="gallery" description="Photographs by Aravind Nandakumar.">
+  <section class="head wrap grid">
+    <div class="shader" data-shader="grain" data-colors={shaderColors(homeTheme)}></div>
+    <h1 class="voice h over" data-split data-intro>Gallery</h1>
+    {items.length > 0 && <p class="intro over" data-lines>Things I noticed and kept. Select any photo to see it large.</p>}
+    {items.length > 0 && <p class="meta n over">{items.length} photographs</p>}
+  </section>
+
+  <ul class="wall wrap" role="list" data-wall>
+    {items.map((p, i) => (
+      <li class:list={['ph', spans[i % spans.length]]} style={`--ar:${p.w}/${p.h}`}>
+        {(
+          <button type="button" class="frame" data-curtain data-follow="View" data-zoom data-group="photos" data-src={u(p.src)} data-alt={p.alt} data-caption={[p.caption, p.place, p.year].filter(Boolean).join(' · ')} aria-label={`View larger: ${p.alt}`}>
+            <img src={u(p.src)} alt={p.alt} width={p.w} height={p.h} loading={i < 4 ? 'eager' : 'lazy'} data-parallax="3" />
+          </button>
+        )}
+        {(p.caption || p.place) && <p class="cap meta">{p.caption}{p.place && <span> · {p.place}</span>}{p.year && <span> · {p.year}</span>}</p>}
+      </li>
+    ))}
+  </ul>
+
+</Base>
+
+<style>
+  .head { position: relative; padding-top: 160px; padding-bottom: 80px; align-items: end; row-gap: 24px; }
+  .head > .shader { -webkit-mask-image: linear-gradient(#000 45%, transparent); mask-image: linear-gradient(#000 45%, transparent); }
+  .h { grid-column: 1 / 8; font-size: var(--step-display); margin-left: -.05em; }
+  .intro { grid-column: 8 / 13; font-size: 19px; }
+  .n { grid-column: 8 / 13; }
+  @media (max-width: 900px) { .h, .intro, .n { grid-column: 1 / -1; } }
+
+  .wall { list-style: none; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(32px, 6vw, 96px) var(--g); align-items: start; padding-bottom: 40px; }
+  .ph { min-width: 0; }
+  .s-wide { grid-column: span 7; }
+  .s-tall { grid-column: span 5; margin-top: 12vh; }
+  .s-small { grid-column: span 4; }
+  .s-mid { grid-column: span 6; margin-top: 6vh; }
+  .ph:nth-child(8n + 3) { grid-column: 2 / span 4; }
+  @media (max-width: 900px) { .wall { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ph { grid-column: span 1 !important; margin-top: 0 !important; } .s-wide, .s-mid { grid-column: 1 / -1 !important; } }
+
+  .frame { display: block; width: 100%; aspect-ratio: var(--ar); padding: 0; border: 0; overflow: hidden; background: var(--surface); cursor: zoom-in; }
+  .frame img { width: 100%; height: 115%; object-fit: cover; transition: scale .9s var(--ease); }
+  .frame:hover img, .frame:focus-visible img { scale: 1.04; }
+  .cap { margin-top: 12px; }
+
+</style>

@@ -1,0 +1,123 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { site, u, themeVars, homeTheme, shaderColors } from '../data/site';
+
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Home" current="home" description={`${site.name} designs digital products and builds them: ${work.map((w) => w.data.title).join(', ')}.`}>
+  <section class="stage hero wrap" data-stage data-label="" style={themeVars(homeTheme)}>
+    <div class="shader" data-shader="grain" data-colors={shaderColors(homeTheme)}></div>
+    <h1 class="name voice over" data-split data-intro>Aravind<br />Nandakumar</h1>
+    <div class="grid hero-row over">
+      <p class="lede" data-lines>{site.intro} Six projects so far, from a liver lab report reader to a Marvel-themed fest.</p>
+      <dl class="facts">
+        <div><dt>Now</dt><dd>{site.now}</dd></div>
+        <div><dt>From</dt><dd>{site.from}</dd></div>
+        <div><dt>Design</dt><dd>{site.design.slice(0, 3).join(', ')}</dd></div>
+        <div><dt>Build</dt><dd>{site.build.slice(0, 4).join(', ')}</dd></div>
+      </dl>
+    </div>
+    <a class="down meta over" href="#work" data-magnet>Scroll through the work</a>
+  </section>
+
+  <div id="work" aria-hidden="true"></div>
+  <h2 class="sr">Selected work</h2>
+  {work.map((w, i) => (
+    <section class="stage project wrap grid" data-stage data-label={w.data.title} style={themeVars(w.data.theme)} aria-labelledby={`p-${w.id}`}>
+      <div class="shader" data-liquid={w.data.shader} data-colors={shaderColors(w.data.theme)}></div>
+      <div class="copy over">
+        <h3 id={`p-${w.id}`} class="title voice" data-split>{w.data.title}</h3>
+        <p class="line" data-lines>{w.data.line}</p>
+        <p class="meta does">{w.data.does.join(' · ')} · {w.data.year}</p>
+        <a class="btn" href={u(`work/${w.id}/`)}>See how it was made<span class="sr"> : {w.data.title}</span></a>
+      </div>
+      <a class="shots over" href={u(`work/${w.id}/`)} tabindex="-1" aria-hidden="true" data-follow="Open">
+        <img class="desk" data-parallax="4" src={u(w.data.cover)} alt="" width="1440" height="900" loading={i === 0 ? 'eager' : 'lazy'} />
+        {w.data.mobile && <img class="mob" data-parallax="-14" src={u(w.data.mobile)} alt="" width="390" height="844" loading="lazy" />}
+        <span class="bar"></span>
+      </a>
+    </section>
+  ))}
+
+  <section class="about wrap grid" data-stage data-label="" style={themeVars(homeTheme)} aria-labelledby="about-h">
+    <h2 id="about-h" class="voice about-h" data-split>From Figma file to production.</h2>
+    <div class="about-copy">
+      <p data-lines>I started in Figma as a UI/UX intern, designing apps for an NGO. Then I learned to ship what I draw: React at Netstratum in Kochi, a master's at Christ University, and now front-end engineering at CodeWalnut in Bangalore.</p>
+      <a class="btn ghost" href={u('about/')} data-reveal style="--i:2">More about me</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* every section is a sticky stage; the next one slides up over it */
+  .stage { position: sticky; top: 0; min-height: 100vh; min-height: 100svh; overflow: hidden; background: var(--ground); color: var(--ink); transform-origin: 50% 0; }
+
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr); align-content: end; padding-bottom: 7vh; }
+  .name { font-size: var(--step-display); margin-left: -.06em; text-transform: uppercase; }
+  .hero-row { margin-top: 4vh; align-items: end; }
+  .lede { grid-column: 1 / 7; font-size: clamp(22px, 2.3vw, 34px); line-height: 1.15; letter-spacing: -.02em; font-weight: 500; }
+  .facts { grid-column: 7 / 13; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; font-size: 14px; margin: 0; }
+  .facts dt { font-weight: 650; }
+  .facts dd { margin: 0; color: var(--muted); }
+  .down { position: absolute; right: var(--m); top: 88px; text-decoration: none; }
+  @media (max-width: 800px) { .lede, .facts { grid-column: 1 / -1; } .down { display: none; } }
+
+  .project { align-items: center; padding-top: 96px; padding-bottom: 56px; }
+  .copy { grid-column: 1 / 7; align-self: end; padding-bottom: 4vh; }
+  .count { margin-bottom: 18px; }
+  .title { font-size: min(calc(clamp(44px, 6.4vw, 124px) * 100 / var(--wdth)), 8.4vw, 132px); margin-left: -.04em; }
+  .line { font-size: var(--step-3); line-height: 1.15; letter-spacing: -.015em; margin-top: 20px; max-width: 20ch; font-weight: 500; }
+  .does { margin: 22px 0 28px; }
+  .shots { grid-column: 7 / 13; position: relative; display: block; }
+  .desk { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; transition: translate .5s var(--ease); box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 12%, transparent); }
+  .mob { position: absolute; width: 22%; right: -1%; bottom: -9%; aspect-ratio: 390 / 844; object-fit: cover; object-position: top; outline: 6px solid var(--ground); transition: translate .5s var(--ease); }
+  .bar { position: absolute; left: 0; bottom: -16px; height: 6px; width: 100%; background: var(--accent); transform-origin: left; scale: 0 1; transition: scale .5s var(--ease); }
+  .project:has(.btn:hover, .shots:hover) .desk { translate: 0 -8px; }
+  .project:has(.btn:hover, .shots:hover) .mob { translate: 0 8px; }
+  .project:has(.btn:hover, .shots:hover) .bar { scale: 1 1; }
+  @media (max-width: 900px) {
+    .project { align-content: center; padding-top: 76px; }
+    .copy, .shots { grid-column: 1 / -1; }
+    .copy { order: 2; padding-bottom: 0; }
+    .title { font-size: min(calc(13vw * 100 / var(--wdth)), 16vw, 96px); }
+    .mob { width: 26%; }
+  }
+
+  .about { position: relative; z-index: 2; background: var(--ground); color: var(--ink); padding-top: 180px; padding-bottom: 40px; min-height: 70vh; align-content: center; }
+  .about-h { grid-column: 1 / 7; font-size: var(--step-1); }
+  .about-copy { grid-column: 8 / 13; align-self: end; display: grid; gap: 28px; justify-items: start; font-size: 19px; }
+  @media (max-width: 900px) { .about-h, .about-copy { grid-column: 1 / -1; } }
+</style>
+
+<script>
+  import { onPage } from '../scripts/page';
+  // One driver: the stage covering the top of the screen sets the nav's colours and label.
+  onPage(() => {
+    const root = document.documentElement;
+    const now = document.querySelector<HTMLElement>('[data-now]');
+    const stages = [...document.querySelectorAll<HTMLElement>('[data-stage]')];
+    let current: HTMLElement | null = null;
+    let ticking = false;
+    function update() {
+      ticking = false;
+      let active = stages[0];
+      for (const s of stages) if (s.getBoundingClientRect().top <= 40) active = s;
+      if (!active || active === current) return;
+      current = active;
+      const cs = getComputedStyle(active);
+      root.style.setProperty('--nav-ground', cs.backgroundColor);
+      root.style.setProperty('--nav-ink', cs.color);
+      if (now) now.textContent = active.dataset.label ?? '';
+    }
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    addEventListener('scroll', onScroll, { passive: true });
+    update();
+    return () => {
+      removeEventListener('scroll', onScroll);
+      root.style.removeProperty('--nav-ground'); root.style.removeProperty('--nav-ink');
+    };
+  });
+</script>

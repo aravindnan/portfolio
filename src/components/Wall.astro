@@ -1,0 +1,30 @@
+---
+/** Many small pieces at once: a wall of square stills, each named. */
+import { u } from '../data/site';
+interface Item { src: string; title: string; note?: string }
+interface Props { title: string; intro?: string; items: Item[] }
+const { title, intro, items } = Astro.props;
+const id = 'w-' + title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+<section class="wall wrap" aria-labelledby={id}>
+  <h2 id={id} class="voice" data-split>{title}</h2>
+  {intro && <p class="intro" data-reveal style="--i:1">{intro}</p>}
+  <ul role="list">
+    {items.map((it, i) => (
+      <li data-reveal style={`--i:${i % 4}`}>
+        <img src={u(it.src)} alt={`${it.title}${it.note ? ': ' + it.note : ''}`} width="1000" height="1000" loading="lazy" />
+        <p><strong>{it.title}</strong>{it.note && <span class="meta"> {it.note}</span>}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+<style>
+  .wall { padding-top: 160px; }
+  h2 { font-size: var(--step-2); }
+  .intro { max-width: 56ch; font-size: 18px; margin-top: 16px; }
+  ul { list-style: none; padding: 0; margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 32px var(--g); }
+  img { width: 100%; aspect-ratio: 1; object-fit: contain; background: var(--surface); padding: 6%; transition: scale .5s var(--ease); }
+  li:hover img { scale: 1.03; }
+  li p { margin-top: 10px; font-size: 15px; line-height: 1.35; }
+  li strong { font-weight: 650; display: block; }
+</style>
